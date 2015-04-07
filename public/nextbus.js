@@ -3,7 +3,7 @@
   var getNextWork = function() {
     $.ajax({
       type: 'GET',
-      url: '/next-work',
+      url: '/next/work',
       success: function (buses) {
         $('#times').empty();
         if (!buses.length) {
@@ -28,7 +28,7 @@
   var getNextHome = function() {
     $.ajax({
       type: 'GET',
-      url: '/next-home',
+      url: '/next/home',
       success: function (buses) {
         $('#times').empty();
         if (!buses.length) {
