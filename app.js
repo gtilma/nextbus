@@ -1,4 +1,5 @@
 var express = require('express');
+var url = require('url')
 var db = require('knex')({
   client: 'mysql',
   connection: {
@@ -33,40 +34,20 @@ var server = app.listen(8080, function() {
 
 })();
 
-app.get('/next-work', function(request, response){
+app.get('/next/*', function(request, response){
   var now = new Date();
   var timeNow = now.getMilTime(),
       dayOfWeek = now.getDayName(),
-      stop = 4838, // hard-coded example stop
-      route = 663, //   and route for proof of concept
-      buses = [];
+      parts = url.parse(request.url),
+      route = 663,
+      buses = [],
+      stop;
 
-  db.select('st.departure_time', 't.route_id', 's.stop_name')
-    .from('stop_times as st')
-    .innerJoin('stops as s', 'st.stop_id', 's.stop_id')
-    .innerJoin('trips as t', 'st.trip_id', 't.trip_id')
-    .innerJoin('calendar as c', 't.service_id', 'c.service_id')
-    .where('st.stop_id', stop)
-    .andWhere('t.route_id', route)
-    .andWhere('st.departure_time', '>', timeNow)
-    .andWhere('c.'+dayOfWeek, 1)
-    .orderBy('st.departure_time')
-    .limit(4)
-  .map(function(row){
-    buses.push(row);
-  })
-  .then(function(){
-    response.send(buses);
-  });
-});
+  var endpoint = parts.pathname.split('/')[2];
 
-app.get('/next-home', function(request, response){
-  var now = new Date();
-  var timeNow = now.getMilTime(),
-      dayOfWeek = now.getDayName(),
-      stop = 1969,  // hard-coded example stop
-      route = 663,  //   and route for proof of concept
-      buses = [];
+  // hard-coded example stops and route for proof of concept
+  if (endpoint === 'home') stop = 1969;
+  if (endpoint === 'work') stop = 4838;
 
   db.select('st.departure_time', 't.route_id', 's.stop_name')
     .from('stop_times as st')
