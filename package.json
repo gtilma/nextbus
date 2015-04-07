@@ -1,0 +1,14 @@
+{
+  "name": "nextbus",
+  "version": "0.0.0",
+  "description": "the next 4 buses",
+  "main": "app.js",
+  "repository": "https://github.com/gtilma/nextbus.git",
+  "license": "Proprietary",
+  "private": false,
+  "dependencies": {
+    "express": "^4.0.0",
+    "knex": "^0.5.7",
+    "mysql": "^2.4.2"
+  }
+}
